@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "eslint --ignore-path .gitignore .",
-    "test": "jest test/**/*.js"
+    "test": "jest test/*.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "devDependencies": {
     "eslint": "^5.1.0",
     "eslint-config-strongloop": "^2.1.0",
+    "eslint-plugin-jest": "^21.18.0",
     "jest": "^23.4.1"
   }
 }

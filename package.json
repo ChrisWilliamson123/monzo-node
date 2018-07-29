@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "Budgeting application for Monzo",
   "main": "index.js",
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "scripts": {
     "pretest": "eslint --ignore-path .gitignore .",
-    "test": "jest test/*.js"
+    "test": "jest test/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +21,13 @@
   },
   "homepage": "https://github.com/ChrisWilliamson123/monzo-node#readme",
   "devDependencies": {
-    "eslint": "^5.1.0",
-    "eslint-config-strongloop": "^2.1.0",
+    "eslint": "^5.2.0",
     "eslint-plugin-jest": "^21.18.0",
+    "eslint-plugin-node": "^7.0.1",
     "jest": "^23.4.1"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.282.1",
+    "config": "^2.0.0"
   }
 }

@@ -1,12 +1,12 @@
 const rp = require('request-promise');
 const storeRefreshToken = require('./storeRefreshToken');
 
-module.exports = async (secretsClient, refreshToken, clientId, clientSecret) => {
+module.exports = async (clientId, clientSecret, refreshToken, secretsApiClient, refreshTokenName) => {
   try {
     const params = {
       uri: 'https://api.monzo.com/oauth2/token',
       method: 'POST',
-      body: {
+      form: {
         'grant_type': 'refresh_token',
         'client_id': clientId,
         'client_secret': clientSecret,
@@ -16,7 +16,7 @@ module.exports = async (secretsClient, refreshToken, clientId, clientSecret) => 
     }
   
     const response = await rp(params);
-    await storeRefreshToken(secretsClient, response.refresh_token);
+    await storeRefreshToken(secretsApiClient, refreshTokenName, response.refresh_token);
     return(response.access_token);
   } catch (error) {
     throw error;

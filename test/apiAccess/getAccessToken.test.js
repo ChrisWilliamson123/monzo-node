@@ -17,8 +17,12 @@ describe('When getting an access token', () => {
     }));
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  })
+
   it('should call the monzo authentication url with correct refresh parameters', async () => {
-    await getAccessToken({}, 'testRefreshToken', 'monzoClientId', 'monzoClientSecret');
+    await getAccessToken('monzoClientId', 'monzoClientSecret', 'testRefreshToken', {}, 'refreshTokenName');
     expect(rp.mock.calls[0][0]).toEqual({
       uri: 'https://api.monzo.com/oauth2/token',
       method: 'POST',
@@ -34,12 +38,13 @@ describe('When getting an access token', () => {
 
   it('should call the save refresh token function with the new refresh token', async () => {
     storeRefreshToken.mockImplementation(() => {});
-    await getAccessToken({}, 'testRefreshToken', 'monzoClientId', 'monzoClientSecret');
-    expect(storeRefreshToken.mock.calls[0][1]).toEqual('new_refresh_token');
+    await getAccessToken('monzoClientId', 'monzoClientSecret', 'testRefreshToken', {}, 'refreshTokenName');
+    expect(storeRefreshToken.mock.calls[0][1]).toEqual('refreshTokenName');
+    expect(storeRefreshToken.mock.calls[0][2]).toEqual('new_refresh_token');
   });
 
   it('should return an access token', async () => {
-    const accessToken = await getAccessToken({}, 'testRefreshToken', 'monzoClientId', 'monzoClientSecret');
+    const accessToken = await getAccessToken('monzoClientId', 'monzoClientSecret', 'testRefreshToken', {}, 'refreshTokenName');
     expect(accessToken).toEqual('test_access_token');
   });
 })

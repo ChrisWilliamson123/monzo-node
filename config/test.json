@@ -1,0 +1,7 @@
+{
+  "refreshTokenName": "testRefreshTokenName",
+  "accessTokenName": "testAccessTokenName",
+  "clientSecretName": "testClientSecretName",
+  "accountIdSecretName": "testAccountIdName",
+  "clientId": "testClientId"
+}

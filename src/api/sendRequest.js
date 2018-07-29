@@ -1,9 +1,7 @@
 const rp = require('request-promise');
-const getAccessToken = require('../apiAccess/getAccessToken');
 
-const sendRequest = async (client, endpoint, { clientId, clientSecret, refreshTokenName }, secretsApiClient) => {
-  const uri = `${client.baseURL}${endpoint}`;
-  const accessToken = await getAccessToken(clientId, clientSecret, secretsApiClient, refreshTokenName);
+const sendRequest = async (client, endpoint) => {
+  const uri = `https://api.monzo.com${endpoint}`;
 
   const requestParams = {
     uri,
@@ -12,7 +10,7 @@ const sendRequest = async (client, endpoint, { clientId, clientSecret, refreshTo
       account_id: client.accountId
     },
     headers: {
-      Authorization: `Bearer ${accessToken}`
+      Authorization: `Bearer ${client.accessToken}`
     },
     json: true
   }

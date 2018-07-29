@@ -1,6 +1,6 @@
-const storeRefreshToken = require('../../src/apiAccess/storeRefreshToken');
+const storeSecret = require('../../src/apiAccess/storeSecret');
 
-describe('When storing a new refresh token', () => {
+describe('When storing a new secret', () => {
   it('should call the aws secrets manager with the correct parameters', async () => {
     const secretsClientMock = {
       putSecretValue: jest.fn().mockImplementation(() => ({
@@ -8,7 +8,7 @@ describe('When storing a new refresh token', () => {
       }))
     };
     try {
-      await storeRefreshToken(secretsClientMock, 'testSecretId', 'new_refresh_token');
+      await storeSecret(secretsClientMock, 'testSecretId', 'new_refresh_token');
       expect(secretsClientMock.putSecretValue.mock.calls[0][0]).toEqual({
         SecretId: 'testSecretId',
         SecretString: 'new_refresh_token'
@@ -26,7 +26,7 @@ describe('When storing a new refresh token', () => {
       })
     };
     try {
-      await storeRefreshToken(secretsClientMock, 'testSecretId', 'new_refresh_token');
+      await storeSecret(secretsClientMock, 'testSecretId', 'new_refresh_token');
       expect(1).toEqual(2)
     } catch (error) {
       expect(error).toEqual(awsError);

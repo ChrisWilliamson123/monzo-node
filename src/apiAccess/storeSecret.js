@@ -1,8 +1,8 @@
-module.exports = async (secretsClient, secretName, refreshToken) => {
+module.exports = async (secretsClient, secretName, secretValue) => {
   try {
     await secretsClient.putSecretValue({
       SecretId: secretName,
-      SecretString: refreshToken
+      SecretString: secretValue
     }).promise();
   } catch (error) {
     throw error;

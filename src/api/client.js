@@ -1,7 +1,7 @@
 class MonzoClient {
-  constructor(accountId, baseURL) {
+  constructor(accountId, accessToken) {
     this.accountId = accountId;
-    this.baseURL = baseURL;
+    this.accessToken = accessToken;
   }
 }
 

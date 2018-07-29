@@ -1,19 +1,19 @@
 'use strict';
 
-const getRefreshToken = require('../../src/apiAccess/getRefreshToken');
+const getSecret = require('../../src/apiAccess/getSecret');
 
 describe('When retrieving a refresh token', () => {
-  it('should return us a token on a successful request', async () => {
+  it('should return us a secret on a successful request', async () => {
     try {
       const secretsClientMock = {
         getSecretValue: () => ({
           promise: jest.fn().mockResolvedValue({
-            SecretString: 'REFRESH_TOKEN'
+            SecretString: 'SECRET_STRING'
           })
         })
       }
-      const token = await getRefreshToken(secretsClientMock);
-      expect(token).toEqual('REFRESH_TOKEN');
+      const secret = await getSecret(secretsClientMock);
+      expect(secret).toEqual('SECRET_STRING');
     } catch (error) {
       throw error;
     }
@@ -28,7 +28,7 @@ describe('When retrieving a refresh token', () => {
     }
 
     try {
-      await getRefreshToken(secretsClientErrorMock);
+      await getSecret(secretsClientErrorMock);
       expect(1).toEqual(2);
     } catch (error) {
       expect(error).toEqual(secretsError);

@@ -3,7 +3,7 @@ const AWS = require('aws-sdk');
 
 const Client = require('./src/api/client');
 const getSecret = require('./src/apiAccess/getSecret');
-const sendRequest = require('./src/api/sendRequest');
+const getBalance = require('./src/api/getBalance');
 
 const endpoint = 'https://secretsmanager.eu-west-2.amazonaws.com';
 const region = 'eu-west-2';
@@ -16,8 +16,8 @@ const secretsClient = new AWS.SecretsManager({ region, endpoint });
       await getSecret(secretsClient, config.get('accountIdSecretName')),
       await getSecret(secretsClient, config.get('accessTokenName'))
     )
-    const balanceData = await sendRequest(monzoClient, '/balance');
-    console.log(balanceData);
+    const balance = await getBalance(monzoClient);
+    console.log(balance);
   } catch (e) {
     console.log(e)
   }

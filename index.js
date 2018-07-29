@@ -1,25 +1,25 @@
 const AWS = require('aws-sdk');
 const config = require('config');
+const MonzoClient = require('./src/api/client');
 const getSecret = require('./src/apiAccess/getSecret');
-const getAccessToken = require('./src/apiAccess/getAccessToken');
+const sendRequest = require('./src/api/sendRequest');
 
 const endpoint = 'https://secretsmanager.eu-west-2.amazonaws.com';
 const region = 'eu-west-2';
 
-const client = new AWS.SecretsManager({ region, endpoint });
-const refreshTokenName = config.get('refreshTokenName');
-const clientSecretName = config.get('clientSecretName');
-const clientId = config.get('clientId');
+const secretsClient = new AWS.SecretsManager({ region, endpoint });
+const accountIdName = config.get('accountIdSecretName');
 
 (async () => {
   try {
-    const refreshToken = await getSecret(client, refreshTokenName);
-    console.log(refreshToken);
-    const clientSecret = await getSecret(client, clientSecretName);
-    const accessToken = await getAccessToken(clientId, clientSecret, refreshToken, client, refreshTokenName);
-    console.log(accessToken);
-    const newRefreshToken = await getSecret(client, refreshTokenName);
-    console.log(newRefreshToken);
+    const accountId = await getSecret(secretsClient, accountIdName);
+    const monzoClient = new MonzoClient(accountId, config.get('baseURL'));
+    const balance = await sendRequest(monzoClient, '/balance', {
+      clientId: config.get('clientId'),
+      clientSecret: await getSecret(secretsClient, config.get('clientSecretName')),
+      refreshTokenName: config.get('refreshTokenName')
+    }, secretsClient);
+    console.log(typeof balance);
   } catch (e) {
     console.log(e)
   }

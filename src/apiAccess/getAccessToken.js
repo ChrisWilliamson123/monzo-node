@@ -1,8 +1,10 @@
 const rp = require('request-promise');
 const storeRefreshToken = require('./storeRefreshToken');
+const getSecret = require('./getSecret');
 
-module.exports = async (clientId, clientSecret, refreshToken, secretsApiClient, refreshTokenName) => {
+module.exports = async (clientId, clientSecret, secretsApiClient, refreshTokenName) => {
   try {
+    const refreshToken = await getSecret(secretsApiClient, refreshTokenName)
     const params = {
       uri: 'https://api.monzo.com/oauth2/token',
       method: 'POST',

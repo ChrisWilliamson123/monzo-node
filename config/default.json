@@ -1,6 +1,7 @@
 {
   "refreshTokenName": "MonzoAPIRefreshToken",
   "monzoAPI": {
-    "baseURL": "https://api.monzo.com"
+    "baseURL": "https://api.monzo.com",
+    "clientID": "oauth2client_00009XZpDiGTyjoMG7tTt3"
   }
 }

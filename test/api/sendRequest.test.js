@@ -7,6 +7,9 @@ jest.mock('request-promise');
 jest.mock('../../src/apiAccess/getAccessToken');
 
 describe('When sending a request', () => {
+  beforeEach(() => {
+    getAccessToken.mockImplementation(() => Promise.resolve('testAccessToken'));
+  })
   afterEach(() => {
     jest.resetAllMocks();
   });
@@ -14,7 +17,6 @@ describe('When sending a request', () => {
   it('should send the request to the correct destination', async () => {
     try {
       rp.mockImplementation(() => Promise.resolve());
-      getAccessToken.mockImplementation(() => Promise.resolve('testAccessToken'));
       await sendRequest({baseURL: 'http://baseurl.com'}, '/accounts');
       expect(rp.mock.calls[0][0].uri).toEqual(`http://baseurl.com/accounts`);
     } catch (error) {
@@ -25,7 +27,6 @@ describe('When sending a request', () => {
   it('should attach an authorization header with the access token', async () => {
     try {
       rp.mockImplementation(() => Promise.resolve());
-      getAccessToken.mockImplementation(() => Promise.resolve('testAccessToken'));
       await sendRequest({baseURL: 'http://baseurl.com'}, '/accounts');
       expect(rp.mock.calls[0][0].headers).toEqual({
         Authorization: 'Bearer testAccessToken'
@@ -48,7 +49,6 @@ describe('When sending a request', () => {
 
     try {
       rp.mockImplementation(() => Promise.resolve(mockResponse));
-      getAccessToken.mockImplementation(() => Promise.resolve('testAccessToken'));
       const data = await sendRequest({baseURL: 'http://baseurl.com'}, '/accounts');
       expect(data).toEqual(mockResponse);
     } catch (error) {

@@ -1,3 +1,6 @@
 {
-  "refreshTokenName": "MonzoAPIRefreshToken"
+  "refreshTokenName": "MonzoAPIRefreshToken",
+  "monzoAPI": {
+    "baseURL": "https://api.monzo.com"
+  }
 }

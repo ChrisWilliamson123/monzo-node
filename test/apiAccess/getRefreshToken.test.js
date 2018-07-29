@@ -1,6 +1,6 @@
 'use strict';
 
-const retrieveRefreshToken = require('../../src/apiAccess/retrieveRefreshToken');
+const getRefreshToken = require('../../src/apiAccess/getRefreshToken');
 
 describe('When retrieving a refresh token', () => {
   it('should return us a token on a successful request', async () => {
@@ -12,7 +12,7 @@ describe('When retrieving a refresh token', () => {
           })
         })
       }
-      const token = await retrieveRefreshToken(secretsClientMock);
+      const token = await getRefreshToken(secretsClientMock);
       expect(token).toEqual('REFRESH_TOKEN');
     } catch (error) {
       throw error;
@@ -28,7 +28,7 @@ describe('When retrieving a refresh token', () => {
     }
 
     try {
-      await retrieveRefreshToken(secretsClientErrorMock);
+      await getRefreshToken(secretsClientErrorMock);
       expect(1).toEqual(2);
     } catch (error) {
       expect(error).toEqual(secretsError);

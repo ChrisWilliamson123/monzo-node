@@ -37,9 +37,26 @@ const testTransactions = {
 }
 
 describe('When listing tranactions', () => {
+  beforeAll(() => {
+    sendRequest.mockImplementation(() => (testTransactions));
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should list all transactions', async () => {
     sendRequest.mockImplementation(() => (testTransactions));
 
-    expect(await listTransactions.all({})).toEqual(testTransactions.transactions);
-  })
+    expect(await listTransactions({})).toEqual(testTransactions.transactions);
+  });
+
+  it('should pass the pagination oject through to sendRequest', async () => {
+    const pagination = {
+      since: new Date(2018, 0, 1),
+      before: new Date(2018, 0, 31),
+    }
+    await listTransactions({}, pagination);
+    expect(sendRequest.mock.calls[0][2]).toEqual(pagination);
+  });
 })

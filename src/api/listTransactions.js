@@ -1,7 +1,3 @@
 const sendRequest = require('./sendRequest');
 
-const all = async (client) => (await sendRequest(client, '/transactions')).transactions;
-
-module.exports = {
-  all
-};
+module.exports = async (client, pagination) => (await sendRequest(client, '/transactions', pagination)).transactions;

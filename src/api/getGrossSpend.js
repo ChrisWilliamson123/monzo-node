@@ -9,7 +9,7 @@ const getGrossSpend = async (client) => {
     .filter(amount => amount < 0)
     .reduce((total, amount) => total + amount, 0);
   
-    return Math.abs(grossSpend);
+  return Math.abs(grossSpend);
 }
 
 module.exports = getGrossSpend;

@@ -7,7 +7,7 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "pretest": "eslint --ignore-path .gitignore .",
+    "pretest": "eslint .",
     "test": "NODE_ENV=test jest test/**/*.js"
   },
   "repository": {
@@ -20,6 +20,16 @@
     "url": "https://github.com/ChrisWilliamson123/monzo-node/issues"
   },
   "homepage": "https://github.com/ChrisWilliamson123/monzo-node#readme",
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.js"
+    ],
+    "roots": [
+      "<rootDir>/test/"
+    ],
+    "testEnvironment": "node"
+  },
   "devDependencies": {
     "eslint": "^5.2.0",
     "eslint-plugin-jest": "^21.18.0",

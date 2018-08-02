@@ -1,15 +1,22 @@
-const listTransactions = require('../../src/api/listTransactions');
-const today = require('../utils/date/today');
+const getTransactions = require('./listTransactions');
+const getTodaysDate = require('../utils/date/today');
 
-const getGrossReceived = async (client) => {
-  const transactions = await listTransactions(client, { since: today() });
+const getReceived = transactions => transactions
+  .map(transaction => transaction.amount)
+  .filter(amount => amount > 0)
+  .reduce((total, amount) => total + amount, 0);
 
-  const grossReceived = transactions
-    .map(transaction => transaction.amount)
-    .filter(amount => amount > 0)
-    .reduce((total, amount) => total + amount, 0);
-  
-  return grossReceived;
+const today = async (client) => {
+  const transactions = await getTransactions(client, { since: getTodaysDate()});
+  return getReceived(transactions);
 }
 
-module.exports = getGrossReceived;
+const inDateRange = async (client, pagination) => {
+  const transactions = await getTransactions(client, pagination);
+  return getReceived(transactions);
+}
+
+module.exports = {
+  today,
+  inDateRange
+};

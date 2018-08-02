@@ -18,8 +18,6 @@ const inDateRange = async (client, pagination) => {
   return getSpend(transactions);
 }
 
-
-
 module.exports = {
   today,
   inDateRange

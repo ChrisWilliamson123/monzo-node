@@ -1,5 +1,5 @@
 const listTransactions = require('../../src/api/listTransactions');
-const today = require('../utils/today');
+const today = require('../utils/date/today');
 
 const getGrossReceived = async (client) => {
   const transactions = await listTransactions(client, { since: today() });

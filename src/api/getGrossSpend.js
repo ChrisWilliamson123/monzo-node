@@ -1,15 +1,26 @@
 const getTransactions = require('./listTransactions');
-const today = require('../utils/today');
+const getTodaysDate = require('../utils/date/today');
 
-const getGrossSpend = async (client) => {
-  const transactions = await getTransactions(client, { since: today()});
-  
-  const grossSpend = transactions
+const getSpend = transactions => Math.abs(
+  transactions
     .map(transaction => transaction.amount)
     .filter(amount => amount < 0)
-    .reduce((total, amount) => total + amount, 0);
-  
-  return Math.abs(grossSpend);
+    .reduce((total, amount) => total + amount, 0)
+);
+
+const today = async (client) => {
+  const transactions = await getTransactions(client, { since: getTodaysDate()});
+  return getSpend(transactions);
 }
 
-module.exports = getGrossSpend;
+const inDateRange = async (client, pagination) => {
+  const transactions = await getTransactions(client, pagination);
+  return getSpend(transactions);
+}
+
+
+
+module.exports = {
+  today,
+  inDateRange
+};

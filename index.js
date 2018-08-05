@@ -3,8 +3,6 @@ const AWS = require('aws-sdk');
 
 const Client = require('./src/api/client');
 const getSecret = require('./src/apiAccess/getSecret');
-const getGrossSpend = require('./src/api/getGrossSpend');
-const budgetingRange = require('./src/utils/date/getBudgetingRange');
 
 const endpoint = 'https://secretsmanager.eu-west-2.amazonaws.com';
 const region = 'eu-west-2';
@@ -17,8 +15,7 @@ const secretsClient = new AWS.SecretsManager({ region, endpoint });
       await getSecret(secretsClient, config.get('accountIdSecretName')),
       await getSecret(secretsClient, config.get('accessTokenName'))
     );
-    const spent = await getGrossSpend.inDateRange(monzoClient, budgetingRange());
-    console.log(JSON.stringify(spent));
+    console.log(monzoClient)
   } catch (e) {
     console.log(e)
   }

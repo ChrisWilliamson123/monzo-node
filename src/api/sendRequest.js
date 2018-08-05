@@ -43,7 +43,7 @@ const get = async (client, endpoint, pagination) => {
 const put = async (accessToken, endpoint, data) => {
   const basicParams = buildBasicParams('PUT', endpoint, accessToken);
   
-  const fullParams = Object.assign({}, basicParams, { data });
+  const fullParams = Object.assign({}, basicParams, { form: data });
 
   return await rp(fullParams);
 };

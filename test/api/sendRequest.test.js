@@ -101,7 +101,7 @@ describe('When sending a request', () => {
 
     it('should send a data object', async () => {
       await sendRequest.put('testAccessToken', '/accounts', { test_data: 'test' });
-      expect(rp.mock.calls[0][0].data).toEqual({
+      expect(rp.mock.calls[0][0].form).toEqual({
         test_data: 'test'
       });
     });

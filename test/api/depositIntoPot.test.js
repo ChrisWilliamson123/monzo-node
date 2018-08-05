@@ -8,6 +8,7 @@ describe('When depositing into a pot', () => {
       accessToken: 'testAccessToken'
     }
     jest.spyOn(sendRequest, 'put').mockImplementation(() => {});
+    jest.spyOn(Math, 'random').mockImplementation(() => 0.1);
     await depositIntoPot(testClient, 'testPotId', 100);
     expect(sendRequest.put.mock.calls[0]).toEqual([
       'testAccessToken',
@@ -15,7 +16,7 @@ describe('When depositing into a pot', () => {
       {
         'source_account_id': testClient.accountId,
         amount: 100,
-        'dedupe_id': 'abc'
+        'dedupe_id': 'lllllllllm'
       }
     ])
   });

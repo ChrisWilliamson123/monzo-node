@@ -1,5 +1,8 @@
 const sendRequest = require('../../src/api/sendRequest');
 const withdrawFromPot = require('../../src/api/withdrawFromPot');
+const getDedupeId = require('../../src/utils/getDedupeId');
+
+jest.mock('../../src/utils/getDedupeId');
 
 describe('When depositing into a pot', () => {
   it('should call sendRequest with the correct parameters', async () => {
@@ -8,7 +11,7 @@ describe('When depositing into a pot', () => {
       accessToken: 'testAccessToken'
     }
     jest.spyOn(sendRequest, 'put').mockImplementation(() => {});
-    jest.spyOn(Math, 'random').mockImplementation(() => 0.1);
+    getDedupeId.mockImplementation(() => 'dedupeId')
     await withdrawFromPot(testClient, 'testPotId', 100);
     expect(sendRequest.put.mock.calls[0]).toEqual([
       'testAccessToken',
@@ -16,7 +19,7 @@ describe('When depositing into a pot', () => {
       {
         'destination_account_id': testClient.accountId,
         amount: 100,
-        'dedupe_id': 'lllllllllm'
+        'dedupe_id': 'dedupeId'
       }
     ]);
   });

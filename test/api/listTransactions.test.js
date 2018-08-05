@@ -1,8 +1,6 @@
 const listTransactions = require('../../src/api/listTransactions');
 const sendRequest = require('../../src/api/sendRequest');
 
-jest.mock('../../src/api/sendRequest')
-
 const testTransactions = {
   "transactions": [
     {
@@ -25,7 +23,7 @@ const testTransactions = {
 
 describe('When listing tranactions', () => {
   beforeAll(() => {
-    sendRequest.mockImplementation(() => (testTransactions));
+    jest.spyOn(sendRequest, 'get').mockImplementation(() => (testTransactions));
   });
 
   afterEach(() => {
@@ -33,7 +31,7 @@ describe('When listing tranactions', () => {
   });
 
   it('should list all transactions', async () => {
-    sendRequest.mockImplementation(() => (testTransactions));
+    jest.spyOn(sendRequest, 'get').mockImplementation(() => (testTransactions));
 
     expect(await listTransactions({})).toEqual(testTransactions.transactions);
   });
@@ -44,7 +42,7 @@ describe('When listing tranactions', () => {
       before: new Date(2018, 0, 31),
     }
     await listTransactions({}, pagination);
-    expect(sendRequest.mock.calls[0][2]).toEqual(pagination);
+    expect(sendRequest.get.mock.calls[0][2]).toEqual(pagination);
   });
 
   it('should remove pot transactions with the id that is passed', async () => {

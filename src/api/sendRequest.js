@@ -11,24 +11,44 @@ const buildPaginationObject = (pagination) => {
   );
 };
 
-const sendRequest = async (client, endpoint, pagination) => {
-  const uri = `https://api.monzo.com${endpoint}`;
+const buildBasicParams = (method, endpoint, accessToken) => ({
+  uri: `https://api.monzo.com${endpoint}`,
+  method,
+  headers: {
+    Authorization: `Bearer ${accessToken}`
+  },
+  json: true
+});
 
-  const requestParams = {
-    uri,
-    method: 'GET',
-    qs: Object.assign(
-      {},
-      { account_id: client.accountId },
-      pagination ? buildPaginationObject(pagination) : null
-    ),
-    headers: {
-      Authorization: `Bearer ${client.accessToken}`
-    },
-    json: true
-  }
+const buildQueryString = (accountId, pagination) => ({
+  qs: Object.assign(
+    {},
+    { account_id: accountId },
+    pagination ? buildPaginationObject(pagination) : null
+  )
+})
 
-  return await rp(requestParams);
+const get = async (client, endpoint, pagination) => {
+  const basicParams = buildBasicParams('GET', endpoint, client.accessToken)
+  
+  const fullParams = Object.assign(
+    {},
+    basicParams,
+    buildQueryString(client.accountId, pagination)
+  );
+
+  return await rp(fullParams);
+};
+
+const put = async (accessToken, endpoint, data) => {
+  const basicParams = buildBasicParams('PUT', endpoint, accessToken);
+  
+  const fullParams = Object.assign({}, basicParams, { data });
+
+  return await rp(fullParams);
+};
+
+module.exports = {
+  get,
+  put
 }
-
-module.exports = sendRequest;

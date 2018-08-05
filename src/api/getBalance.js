@@ -1,3 +1,3 @@
 const sendRequest = require('./sendRequest')
 
-module.exports = async (client) => (await sendRequest(client, '/balance')).balance
+module.exports = async (client) => (await sendRequest.get(client, '/balance')).balance

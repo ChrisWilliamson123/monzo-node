@@ -1,8 +1,6 @@
 const listPots = require('../../src/api/listPots');
 const sendRequest = require('../../src/api/sendRequest');
 
-jest.mock('../../src/api/sendRequest')
-
 const testPots = {
   "pots": [
     {
@@ -30,13 +28,14 @@ const testPots = {
 
 
 describe('When listing pots', () => {
+  beforeAll(() => {
+    jest.spyOn(sendRequest, 'get').mockImplementation(() => (testPots));
+  });
   it('should list pots that are currently active', async () => {
-    sendRequest.mockImplementation(() => (testPots));
     expect(await listPots({})).toEqual([testPots.pots[0]]);
   });
 
   it('should list all pots when showDeleted argument is true', async () => {
-    sendRequest.mockImplementation(() => (testPots));
     expect(await listPots({}, true)).toEqual(testPots.pots);
   });
 });

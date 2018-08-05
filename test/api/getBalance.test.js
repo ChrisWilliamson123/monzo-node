@@ -1,11 +1,9 @@
 const getBalance = require('../../src/api/getBalance');
 const sendRequest = require('../../src/api/sendRequest');
 
-jest.mock('../../src/api/sendRequest')
-
 describe('Get balance', () => {
   it('should get the user\'s balance in pence', async () => {
-    sendRequest.mockImplementation(() => ({
+    jest.spyOn(sendRequest, 'get').mockImplementation(() => ({
       balance: 35430,
       total_balance: 48084,
       currency: 'GBP',

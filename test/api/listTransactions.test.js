@@ -6,33 +6,20 @@ jest.mock('../../src/api/sendRequest')
 const testTransactions = {
   "transactions": [
     {
-      "account_balance": 13013,
-      "amount": -510,
-      "created": "2015-08-22T12:20:18Z",
-      "currency": "GBP",
-      "description": "THE DE BEAUVOIR DELI C LONDON GBR",
-      "id": "tx_00008zIcpb1TB4yeIFXMzx",
-      "merchant": "merch_00008zIcpbAKe8shBxXUtl",
-      "metadata": {},
-      "notes": "Salmon sandwich",
-      "is_load": false,
-      "settled": "2015-08-23T12:20:18Z",
-      "category": "eating_out"
+      amount: -510,
+      id: "tx_00008zIcpb1TB4yeIFXMzx",
     },
     {
-      "account_balance": 12334,
-      "amount": -679,
-      "created": "2015-08-23T16:15:03Z",
-      "currency": "GBP",
-      "description": "VUE BSL LTD ISLINGTON GBR",
-      "id": "tx_00008zL2INM3xZ41THuRF3",
-      "merchant": "merch_00008z6uFVhVBcaZzSQwCX",
-      "metadata": {},
-      "notes": "",
-      "is_load": false,
-      "settled": "2015-08-24T16:15:03Z",
-      "category": "eating_out"
+      amount: -679,
+      id: "tx_00008zL2INM3xZ41THuRF3",
     },
+    { 
+      id: 'tx_00009ZKOFnXZobfO0iGVNp',
+      amount: 1950,
+      metadata: { 
+        pot_id: 'budgeting_pot',
+      },
+    }
   ]
 }
 
@@ -58,5 +45,11 @@ describe('When listing tranactions', () => {
     }
     await listTransactions({}, pagination);
     expect(sendRequest.mock.calls[0][2]).toEqual(pagination);
+  });
+
+  it('should remove pot transactions with the id that is passed', async () => {
+    const transactions = await listTransactions({}, undefined, 'budgeting_pot');
+    const expected = testTransactions.transactions;
+    expect(transactions).toEqual([expected[0], expected[1]]);
   });
 })

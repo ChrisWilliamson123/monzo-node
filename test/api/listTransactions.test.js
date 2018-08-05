@@ -45,8 +45,8 @@ describe('When listing tranactions', () => {
     expect(sendRequest.get.mock.calls[0][2]).toEqual(pagination);
   });
 
-  it('should remove pot transactions with the id that is passed', async () => {
-    const transactions = await listTransactions({}, undefined, 'budgeting_pot');
+  it('should remove budgeting pot transactions', async () => {
+    const transactions = await listTransactions({ budgetingPot: { id: 'budgeting_pot' }});
     const expected = testTransactions.transactions;
     expect(transactions).toEqual([expected[0], expected[1]]);
   });

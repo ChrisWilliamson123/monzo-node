@@ -3,5 +3,6 @@
   "accessTokenName": "MonzoAccessToken",
   "clientSecretName": "MonzoClientSecret",
   "accountIdSecretName": "MonzoAccountId",
-  "clientId": "oauth2client_00009XZpDiGTyjoMG7tTt3"
+  "clientId": "oauth2client_00009XZpDiGTyjoMG7tTt3",
+  "budgetingPotName": "Budgeting"
 }

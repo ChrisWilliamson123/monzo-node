@@ -3,5 +3,6 @@
   "accessTokenName": "testAccessTokenName",
   "clientSecretName": "testClientSecretName",
   "accountIdSecretName": "testAccountIdName",
-  "clientId": "testClientId"
+  "clientId": "testClientId",
+  "budgetingPotName": "Budgeting"
 }

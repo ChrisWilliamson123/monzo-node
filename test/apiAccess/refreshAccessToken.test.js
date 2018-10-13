@@ -28,7 +28,7 @@ describe('When getting an access token', () => {
   })
 
   it('should call the monzo authentication url with correct refresh parameters', async () => {
-    await refreshAccessToken();
+    await refreshAccessToken.init();
     expect(rp.mock.calls[0][0]).toEqual({
       uri: 'https://api.monzo.com/oauth2/token',
       method: 'POST',
@@ -43,13 +43,13 @@ describe('When getting an access token', () => {
   });
 
   it('should call the store token function with the new refresh token', async () => {
-    await refreshAccessToken();
+    await refreshAccessToken.init();
     expect(storeSecret.mock.calls[0][1]).toEqual('refreshToken');
     expect(storeSecret.mock.calls[0][2]).toEqual('new_refresh_token');
   });
 
   it('should store the new access token', async () => {
-    await refreshAccessToken();
+    await refreshAccessToken.init();
     expect(storeSecret.mock.calls[1][1]).toEqual('accessToken');
     expect(storeSecret.mock.calls[1][2]).toEqual('test_access_token');
   });

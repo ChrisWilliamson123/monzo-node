@@ -24,6 +24,11 @@ describe('When getting gross spend', () => {
       listTransactions.mockImplementation(() => Promise.resolve([{ amount: -1000 }, { amount: -2000 }]));
       expect(await getGrossReceived.today({})).toEqual(0);
     });
+
+    it('should ignore incoming transactions that are over 500 pounds', async () => {
+      listTransactions.mockImplementation(() => Promise.resolve([{ amount: 1000 }, { amount: 2000 }, { amount: 50000 }, { amount: 50100 }]));
+      expect(await getGrossReceived.today({})).toEqual(53000);
+    })
   });
 
   describe('In date range', () => {

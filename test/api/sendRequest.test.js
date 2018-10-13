@@ -8,7 +8,7 @@ jest.mock('../../src/apiAccess/refreshAccessToken');
 
 describe('When sending a request', () => {
   beforeEach(() => {
-    refreshAccessToken.mockImplementation(() => Promise.resolve('testAccessToken'));
+    refreshAccessToken.init.mockImplementation(() => Promise.resolve('testAccessToken'));
     rp.mockImplementation(() => Promise.resolve());
   })
   afterEach(() => {

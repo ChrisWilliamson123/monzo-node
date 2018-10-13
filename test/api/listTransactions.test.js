@@ -38,7 +38,8 @@ describe('When listing tranactions', () => {
   });
 
   it('should list all transactions', async () => {
-    expect(await listTransactions({})).toEqual(testTransactions.transactions);
+    const expected = testTransactions.transactions;
+    expect(await listTransactions({})).toEqual([expected[0], expected[1], expected[2]]);
   });
 
   it('should pass the pagination oject through to sendRequest', async () => {
@@ -50,7 +51,7 @@ describe('When listing tranactions', () => {
     expect(sendRequest.get.mock.calls[0][2]).toEqual(pagination);
   });
 
-  it.only('should remove budgeting pot transactions', async () => {
+  it('should remove budgeting pot transactions', async () => {
     const transactions = await listTransactions({ budgetingPot: { id: 'budgeting_pot' }});
     const expected = testTransactions.transactions;
     expect(transactions).toEqual([expected[0], expected[1]]);

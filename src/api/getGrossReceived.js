@@ -3,7 +3,7 @@ const getTodaysDate = require('../utils/date/today');
 
 const getReceived = transactions => transactions
   .map(transaction => transaction.amount)
-  .filter(amount => amount > 0)
+  .filter(amount => amount > 0 && amount <= 50000)
   .reduce((total, amount) => total + amount, 0);
 
 const today = async (client) => {

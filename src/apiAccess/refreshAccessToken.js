@@ -12,9 +12,8 @@ const secretsClient = new AWS.SecretsManager({ region, endpoint });
 
 module.exports = async () => {
   try {
-    const refreshTokenName = config.get('refreshTokenName')
-    const clientSecret = await getSecret(secretsClient, config.get('clientSecretName'));
-    const refreshToken = await getSecret(secretsClient, refreshTokenName);
+    const clientSecret = await getSecret(secretsClient, 'clientSecret');
+    const refreshToken = await getSecret(secretsClient, 'refreshToken');
     const params = {
       uri: 'https://api.monzo.com/oauth2/token',
       method: 'POST',
@@ -28,8 +27,8 @@ module.exports = async () => {
     }
   
     const response = await rp(params);
-    await storeSecret(secretsClient, refreshTokenName, response.refresh_token);
-    await storeSecret(secretsClient, config.get('accessTokenName'), response.access_token);
+    await storeSecret(secretsClient, 'refreshToken', response.refresh_token);
+    await storeSecret(secretsClient, 'accessToken', response.access_token);
   } catch (error) {
     throw error;
   }

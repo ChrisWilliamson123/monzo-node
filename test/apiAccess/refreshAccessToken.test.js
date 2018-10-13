@@ -44,13 +44,13 @@ describe('When getting an access token', () => {
 
   it('should call the store token function with the new refresh token', async () => {
     await refreshAccessToken();
-    expect(storeSecret.mock.calls[0][1]).toEqual('testRefreshTokenName');
+    expect(storeSecret.mock.calls[0][1]).toEqual('refreshToken');
     expect(storeSecret.mock.calls[0][2]).toEqual('new_refresh_token');
   });
 
   it('should store the new access token', async () => {
     await refreshAccessToken();
-    expect(storeSecret.mock.calls[1][1]).toEqual('testAccessTokenName');
+    expect(storeSecret.mock.calls[1][1]).toEqual('accessToken');
     expect(storeSecret.mock.calls[1][2]).toEqual('test_access_token');
   });
 })

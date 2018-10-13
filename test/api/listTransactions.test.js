@@ -17,6 +17,13 @@ const testTransactions = {
       metadata: { 
         pot_id: 'budgeting_pot',
       },
+    },
+    {
+      id: 'tx_00009ZKOFnXZobfO0abcde',
+      amount: 200,
+      metadata: {
+        notes: 'ignore this transaction'
+      }
     }
   ]
 }
@@ -31,8 +38,6 @@ describe('When listing tranactions', () => {
   });
 
   it('should list all transactions', async () => {
-    jest.spyOn(sendRequest, 'get').mockImplementation(() => (testTransactions));
-
     expect(await listTransactions({})).toEqual(testTransactions.transactions);
   });
 
@@ -45,9 +50,15 @@ describe('When listing tranactions', () => {
     expect(sendRequest.get.mock.calls[0][2]).toEqual(pagination);
   });
 
-  it('should remove budgeting pot transactions', async () => {
+  it.only('should remove budgeting pot transactions', async () => {
     const transactions = await listTransactions({ budgetingPot: { id: 'budgeting_pot' }});
     const expected = testTransactions.transactions;
     expect(transactions).toEqual([expected[0], expected[1]]);
+  });
+
+  it("should remove transactions that have 'ignore' in their notes", async () => {
+    const transactions = await listTransactions({});
+    const expected = testTransactions.transactions;
+    expect(transactions).toEqual([expected[0], expected[1], expected[2]]);
   });
 })

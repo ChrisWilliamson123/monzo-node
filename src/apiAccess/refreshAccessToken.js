@@ -10,7 +10,7 @@ const region = 'eu-west-2';
 
 const secretsClient = new AWS.SecretsManager({ region, endpoint });
 
-module.exports = async () => {
+module.exports.init = async () => {
   try {
     const clientSecret = await getSecret(secretsClient, 'clientSecret');
     const refreshToken = await getSecret(secretsClient, 'refreshToken');
@@ -29,6 +29,7 @@ module.exports = async () => {
     const response = await rp(params);
     await storeSecret(secretsClient, 'refreshToken', response.refresh_token);
     await storeSecret(secretsClient, 'accessToken', response.access_token);
+    console.log('Tokens have been refreshed.')
   } catch (error) {
     throw error;
   }

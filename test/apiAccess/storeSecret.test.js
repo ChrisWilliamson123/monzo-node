@@ -5,13 +5,18 @@ describe('When storing a new secret', () => {
     const secretsClientMock = {
       putSecretValue: jest.fn().mockImplementation(() => ({
         promise: () => Promise.resolve()
-      }))
+      })),
+      getSecretValue: () => ({
+        promise: jest.fn().mockResolvedValue({
+          SecretString: '{"secretKey1": "secretValue1", "secretKey2": "secretValue2"}'
+        })
+      })
     };
     try {
-      await storeSecret(secretsClientMock, 'testSecretId', 'new_refresh_token');
+      await storeSecret(secretsClientMock, 'secretKey2', 'secretValue2Replacement');
       expect(secretsClientMock.putSecretValue.mock.calls[0][0]).toEqual({
-        SecretId: 'testSecretId',
-        SecretString: 'new_refresh_token'
+        SecretId: 'MonzoSecrets',
+        SecretString: '{"secretKey1":"secretValue1","secretKey2":"secretValue2Replacement"}'
       });
     } catch (error) {
       throw error;
@@ -23,6 +28,11 @@ describe('When storing a new secret', () => {
     const secretsClientMock = {
       putSecretValue: () => ({
         promise: () => Promise.reject(awsError)
+      }),
+      getSecretValue: () => ({
+        promise: jest.fn().mockResolvedValue({
+          SecretString: '{"secretKey1": "secretValue1", "secreyKey2": "secretValue2"}'
+        })
       })
     };
     try {

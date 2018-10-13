@@ -8,12 +8,12 @@ describe('When retrieving a refresh token', () => {
       const secretsClientMock = {
         getSecretValue: () => ({
           promise: jest.fn().mockResolvedValue({
-            SecretString: 'SECRET_STRING'
+            SecretString: '{"secretKey1": "secretValue1", "secreyKey2": "secretValue2"}'
           })
         })
       }
-      const secret = await getSecret(secretsClientMock);
-      expect(secret).toEqual('SECRET_STRING');
+      const secret = await getSecret(secretsClientMock, 'secretKey1');
+      expect(secret).toEqual('secretValue1');
     } catch (error) {
       throw error;
     }

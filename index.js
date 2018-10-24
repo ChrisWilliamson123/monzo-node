@@ -28,18 +28,18 @@ const secretsClient = new AWS.SecretsManager({ region, endpoint });
     const saved = budgetInPence - netSpendYesterday
 
     if (saved > 0) {
-      console.log(`You have saved £${toPounds(saved)}. Depositing into budgeting pot...`);
+      console.log(`You have saved ${toPounds(saved)}. Depositing into budgeting pot...`);
       potTransaction.deposit(monzoClient, monzoClient.budgetingPot.id, saved);
       console.log(`Transaction complete`);
     } else if (saved == 0) {
       console.log(`You have broke even today.`);
       return;
     } else {
-      console.log(`You have gone over budget by £${toPounds(saved)}. Withdrawing from budgeting pot...`);
-      potTransaction.withdraw(monzoClient, monzoClient.budgetingPot.id, saved);
+      console.log(`You have gone over budget by ${toPounds(saved) * -1}. Withdrawing from budgeting pot...`);
+      potTransaction.withdraw(monzoClient, monzoClient.budgetingPot.id, saved * -1);
       console.log(`Transaction complete`);
     }
-    
+
   } catch (e) {
     console.log(e)
   }

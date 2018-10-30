@@ -5,7 +5,7 @@ const setOverspendAmount = require('../src/api/setOverspendAmount');
 jest.mock('../src/api/setOverspendAmount');
 
 describe('Handle budgeting pot', () => {
-  const monzoClient = {budgetingPot: {id: 'id123'}};
+  const monzoClient = {budgetingPot: {id: 'id123', balance: 1000}};
 
   describe('Under budget', () => {
     it('Should deposit into the budgeting pot if the user has saved money', async () => {
@@ -41,17 +41,15 @@ describe('Handle budgeting pot', () => {
         setOverspendAmount.mockReset();
       });
       it('Should withdraw the full amount budgeting pot balance if the amount overspent is more than the budgeting pot balance.', async () => {
-        const budgetingPotBalance = 1000;
         const amountSaved = -2000;
-        await handleBudgetingPot(amountSaved, monzoClient, budgetingPotBalance, {});
-        expect(potTransaction.withdraw.mock.calls[0][2]).toEqual(budgetingPotBalance);
+        await handleBudgetingPot(amountSaved, monzoClient, {});
+        expect(potTransaction.withdraw.mock.calls[0][2]).toEqual(monzoClient.budgetingPot.balance);
       });
       
       it('Should set the total monthly overspend amount to the difference between the budgeting pot balance and the daily overspend.', async () => {
-        const budgetingPotBalance = 1000;
         const amountSaved = -2000;
-        await handleBudgetingPot(amountSaved, monzoClient, budgetingPotBalance, {});
-        expect(setOverspendAmount.mock.calls[0][0]).toEqual(budgetingPotBalance - Math.abs(amountSaved));
+        await handleBudgetingPot(amountSaved, monzoClient, {});
+        expect(setOverspendAmount.mock.calls[0][0]).toEqual(monzoClient.budgetingPot.balance - Math.abs(amountSaved));
       });
     });
   })

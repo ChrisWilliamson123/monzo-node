@@ -5,9 +5,10 @@ const Client = require('./src/api/client');
 const getSecret = require('./src/apiAccess/getSecret');
 const getBudgetingRange = require('./src/utils/date/getBudgetingRange');
 const getBudgetingPot = require('./src/api/getBudgetingPot');
-const potTransaction = require('./src/api/potTransaction');
 const getNetSpend = require('./src/api/getNetSpend');
-const toPounds = require('./src/utils/toPounds');
+const getOverspendAmount = require('./src/api/getOverspendAmount');
+const handleMonthlyOverspend = require('./src/handleMonthlyOverspend');
+const handleBudgetingPot = require('./src/handleBudgetingPot');
 
 const endpoint = 'https://secretsmanager.eu-west-2.amazonaws.com';
 const region = 'eu-west-2';
@@ -25,21 +26,16 @@ const secretsClient = new AWS.SecretsManager({ region, endpoint });
 
     const netSpendYesterday = await getNetSpend(monzoClient, getBudgetingRange());
     const budgetInPence = config.get('dailyBudget') * 100;
+
     const saved = budgetInPence - netSpendYesterday
+    const totalMonthlyOverspend = await getOverspendAmount(secretsClient);
 
-    if (saved > 0) {
-      console.log(`You have saved ${toPounds(saved)}. Depositing into budgeting pot...`);
-      potTransaction.deposit(monzoClient, monzoClient.budgetingPot.id, saved);
-      console.log(`Transaction complete`);
-    } else if (saved == 0) {
-      console.log(`You have broke even today.`);
-      return;
+    if (totalMonthlyOverspend > 0) {
+      const savedAfterMonthlyOverspendHasBeenCalculated = await handleMonthlyOverspend(secretsClient, saved, totalMonthlyOverspend);
+      await handleBudgetingPot(savedAfterMonthlyOverspendHasBeenCalculated, monzoClient, secretsClient);
     } else {
-      console.log(`You have gone over budget by ${toPounds(saved) * -1}. Withdrawing from budgeting pot...`);
-      potTransaction.withdraw(monzoClient, monzoClient.budgetingPot.id, saved * -1);
-      console.log(`Transaction complete`);
+      handleBudgetingPot(saved, monzoClient, secretsClient);
     }
-
   } catch (e) {
     console.log(e)
   }

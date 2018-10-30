@@ -14,7 +14,5 @@ module.exports = async (amountSaved, monzoClient, secretsClient) => {
     } else {
       await potTransaction.withdraw(monzoClient, monzoClient.budgetingPot.id, amountOverspent);
     }
-    
-
   }
 };

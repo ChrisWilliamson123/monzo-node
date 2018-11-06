@@ -32,7 +32,9 @@ const secretsClient = new AWS.SecretsManager({ region, endpoint });
 
     if (totalMonthlyOverspend > 0) {
       const savedAfterMonthlyOverspendHasBeenCalculated = await handleMonthlyOverspend(secretsClient, saved, totalMonthlyOverspend);
-      await handleBudgetingPot(savedAfterMonthlyOverspendHasBeenCalculated, monzoClient, secretsClient);
+      if (savedAfterMonthlyOverspendHasBeenCalculated > 0) {
+        await handleBudgetingPot(savedAfterMonthlyOverspendHasBeenCalculated, monzoClient, secretsClient);
+      }
     } else {
       handleBudgetingPot(saved, monzoClient, secretsClient);
     }

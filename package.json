@@ -38,7 +38,7 @@
     "jest": "^23.4.1"
   },
   "dependencies": {
-    "aws-sdk": "^2.282.1",
+    "aws-sdk": "^2.814.0",
     "config": "^2.0.0",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"
